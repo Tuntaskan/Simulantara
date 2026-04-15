@@ -1,0 +1,23 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Simulantara.Views.FinancePage"
+             Title="Finance">
+
+    <StackLayout Padding="20">
+        <Label Text="Finance Tracker" FontSize="24"/>
+
+        <Entry x:Name="TitleEntry" Placeholder="Nama"/>
+        <Entry x:Name="AmountEntry" Placeholder="Jumlah" Keyboard="Numeric"/>
+
+        <Button Text="Tambah" Clicked="OnAddClicked"/>
+
+        <CollectionView x:Name="FinanceList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Title}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+
+</ContentPage>

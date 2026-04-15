@@ -1,0 +1,14 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Simulantara.Views.MoodPage"
+             Title="MoodPage">
+
+    <StackLayout Padding="20">
+        <Label Text="Mood Tracker" FontSize="24"/>
+
+        <Button Text="😄 Senang" Clicked="OnHappy"/>
+        <Button Text="😐 Biasa" Clicked="OnNormal"/>
+        <Button Text="😢 Sedih" Clicked="OnSad"/>
+    </StackLayout>
+
+</ContentPage>
