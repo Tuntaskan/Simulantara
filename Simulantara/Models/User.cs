@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
-namespace Simulantara.Models;
-
-public class User
+namespace Simulantara.Models
 {
-    public string Name { get; set; } = "Player";
-    public int Level { get; set; } = 1;
-    public int Exp { get; set; } = 0;
-
-    public int MaxExp => Level * 100;
-
-    public void AddExp(int amount)
+    public class User
     {
-        Exp += amount;
+        [PrimaryKey, AutoIncrement]
+        public int UserId { get; set; }
 
-        if (Exp >= MaxExp)
-        {
-            Exp -= MaxExp;
-            Level++;
-        }
+        [MaxLength(50)]
+        public string Username { get; set; }
+
+        public string Gender { get; set; }
+
+        public string ProfilePhoto { get; set; }
+
+        public int Level { get; set; } = 1;
+
+        public int Exp { get; set; } = 0;
+
+        public int CurrentStreak { get; set; } = 0;
+
+        public int HighestStreak { get; set; } = 0;
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }
