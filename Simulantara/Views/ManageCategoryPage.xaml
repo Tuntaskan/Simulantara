@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="Simulantara.Views.ManageCategoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:Simulantara.ViewModels"
+    xmlns:models="clr-namespace:Simulantara.Models"
+    x:DataType="viewmodels:ManageCategoryViewModel"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="bg_default.png"
+            Aspect="AspectFill" />
+
+        <!-- OVERLAY -->
+        <BoxView Color="#88000000" />
+
+        <ScrollView>
+
+            <VerticalStackLayout
+                Spacing="20">
+
+                <!-- ================= HEADER ================= -->
+                <Frame
+                    HeightRequest="100"
+                    CornerRadius="0"
+                    Padding="25,45,25,15"
+                    BackgroundColor="#7E776E"
+                    HasShadow="False">
+
+                    <Grid ColumnDefinitions="Auto,*">
+
+                        <!-- BACK BUTTON -->
+                        <Frame
+                            HeightRequest="45"
+                            WidthRequest="45"
+                            Padding="0"
+                            CornerRadius="14"
+                            BackgroundColor="#D9E0E3"
+                            HasShadow="False"
+                            VerticalOptions="Center">
+
+                            <ImageButton
+                                Source="back.png"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BackCommand}" />
+
+                        </Frame>
+
+                        <!-- TITLE -->
+                        <Label
+                            Grid.Column="1"
+                            Text="Manage Category"
+                            FontSize="26"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                </Frame>
+
+                <!-- ================= CONTENT ================= -->
+                <VerticalStackLayout
+                    Padding="25,0,25,40"
+                    Spacing="20">
+
+                    <!-- INPUT -->
+                    <Label
+                        Text="New Category"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Frame
+                        Padding="0"
+                        CornerRadius="16"
+                        BackgroundColor="#CC1E1E1E"
+                        BorderColor="#33FFFFFF"
+                        HasShadow="False">
+
+                        <Entry
+                            Placeholder="Masukkan nama kategori"
+                            PlaceholderColor="#BBBBBB"
+                            Text="{Binding CategoryName}"
+                            TextColor="White"
+                            FontSize="17"
+                            BackgroundColor="Transparent"
+                            Margin="15,8" />
+
+                    </Frame>
+
+                    <!-- ADD BUTTON -->
+                    <Button
+                        Text="+ Add Category"
+                        HeightRequest="50"
+                        CornerRadius="16"
+                        BackgroundColor="#FF3B5F"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="17"
+                        Command="{Binding AddCategoryCommand}" />
+
+                    <!-- CATEGORY TITLE -->
+                    <Label
+                        Text="Category List"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        Margin="0,10,0,0" />
+
+                    <!-- CATEGORY LIST -->
+                    <CollectionView
+                        ItemsSource="{Binding Categories}"
+                        SelectionMode="None">
+
+                        <CollectionView.ItemsLayout>
+
+                            <LinearItemsLayout
+                                Orientation="Vertical"
+                                ItemSpacing="12" />
+
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="models:Category">
+
+                                <Frame
+                                    Padding="16"
+                                    CornerRadius="18"
+                                    BackgroundColor="#CC1E1E1E"
+                                    BorderColor="#33FFFFFF"
+                                    HasShadow="False">
+
+                                    <Grid
+                                        ColumnDefinitions="*,Auto">
+
+                                        <!-- CATEGORY NAME -->
+                                        <Label
+                                            Text="{Binding Name}"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                        <!-- DEFAULT BADGE -->
+                                        <Frame
+                                            Grid.Column="1"
+                                            Padding="10,5"
+                                            CornerRadius="12"
+                                            BackgroundColor="#4960D8"
+                                            HasShadow="False"
+                                            IsVisible="{Binding IsDefault}">
+
+                                            <Label
+                                                Text="Default"
+                                                FontSize="12"
+                                                FontAttributes="Bold"
+                                                TextColor="White" />
+
+                                        </Frame>
+
+                                    </Grid>
+
+                                </Frame>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

@@ -1,12 +1,295 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Simulantara.Views.ProfilePage"
-             Title="ProfilePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+<ContentPage
+    x:Class="Simulantara.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:Simulantara.Models"
+    Title="Profile"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="background0.jpeg"
+            Aspect="AspectFill" />
+
+        <!-- OVERLAY -->
+        <BoxView Color="#80000000" />
+
+        <!-- CONTENT -->
+        <ScrollView>
+
+            <VerticalStackLayout
+                Padding="30,60,30,40"
+                Spacing="22">
+
+                <!-- NAVBAR -->
+                <Frame
+                    HeightRequest="105"
+                    CornerRadius="0"
+                    Padding="25,45,25,15"
+                    BackgroundColor="#7E776E"
+                    HasShadow="False"
+                    Margin="-30,-60,-30,0">
+
+                    <Grid 
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="18">
+
+                        <!-- BACK BUTTON -->
+                        <Frame
+                            HeightRequest="45"
+                            WidthRequest="45"
+                            Padding="0"
+                            CornerRadius="14"
+                            BackgroundColor="#D9E0E3"
+                            HasShadow="False"
+                            VerticalOptions="Center">
+
+                            <Button
+                                Text="←"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"
+                                TextColor="#4B433A"
+                                Command="{Binding BackCommand}" />
+
+                        </Frame>
+
+                        <!-- TITLE -->
+                        <Label
+                            Grid.Column="1"
+                            Text="Your Profile"
+                            FontSize="26"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                </Frame>
+
+                <!-- PROFILE IMAGE -->
+                <Frame
+                    HeightRequest="140"
+                    WidthRequest="140"
+                    CornerRadius="70"
+                    Padding="0"
+                    BorderColor="White"
+                    BackgroundColor="#D9D9D9"
+                    HasShadow="False"
+                    HorizontalOptions="Center">
+
+                    <Image
+                        Aspect="AspectFill">
+
+                        <Image.Source>
+
+                            <Binding Path="User.ProfileImage" />
+
+                        </Image.Source>
+
+                        <Image.Triggers>
+
+                            <DataTrigger
+                                TargetType="Image"
+                                Binding="{Binding User.ProfileImage}"
+                                Value="{x:Null}">
+
+                                <Setter
+                                    Property="Source"
+                                    Value="default_profile.png" />
+
+                            </DataTrigger>
+
+                        </Image.Triggers>
+
+                    </Image>
+
+                </Frame>
+
+                <!-- USERNAME -->
+                <VerticalStackLayout Spacing="8">
+
+                    <Label
+                        Text="Username"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Frame
+                        Padding="0"
+                        CornerRadius="18"
+                        BackgroundColor="#73665A"
+                        HasShadow="False">
+
+                        <Entry
+                            Text="{Binding User.Username}"
+                            Placeholder="Enter Username"
+                            PlaceholderColor="#DDDDDD"
+                            TextColor="White"
+                            FontSize="18"
+                            BackgroundColor="Transparent"
+                            Margin="15,6" />
+
+                    </Frame>
+
+                </VerticalStackLayout>
+
+                <!-- GENDER -->
+                <VerticalStackLayout Spacing="8">
+
+                    <Label
+                        Text="Gender"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Picker
+                        Title="Choose Gender"
+                        SelectedItem="{Binding User.Gender}"
+                        BackgroundColor="#73665A"
+                        TextColor="White">
+
+                        <Picker.ItemsSource>
+
+                            <x:Array Type="{x:Type model:Gender}">
+                                <model:Gender>Male</model:Gender>
+                                <model:Gender>Female</model:Gender>
+                            </x:Array>
+
+                        </Picker.ItemsSource>
+
+                    </Picker>
+
+                </VerticalStackLayout>
+
+                <!-- PROFILE IMAGE PICKER -->
+                <VerticalStackLayout Spacing="10">
+
+                    <Label
+                        Text="Profile Photo"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Button
+                        Text="Choose Photo"
+                        Command="{Binding PickPhotoCommand}"
+                        BackgroundColor="#73665A"
+                        TextColor="White"
+                        CornerRadius="16" />
+
+                </VerticalStackLayout>
+
+                <!-- LEVEL CARD -->
+                <Frame
+                    BackgroundColor="#33222222"
+                    BorderColor="#55FFFFFF"
+                    CornerRadius="18"
+                    Padding="18"
+                    HasShadow="False">
+
+                    <VerticalStackLayout Spacing="12">
+
+                        <Label
+                            Text="Level Progress"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                        <!-- LEVEL -->
+                        <HorizontalStackLayout Spacing="10">
+
+                            <Label
+                                Text="Level"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                            <Label
+                                Text="{Binding User.Level}"
+                                TextColor="#FFD700"
+                                FontAttributes="Bold" />
+
+                        </HorizontalStackLayout>
+
+                        <!-- EXP -->
+                        <HorizontalStackLayout Spacing="10">
+
+                            <Label
+                                Text="EXP"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                            <Label
+                                Text="{Binding User.Exp}"
+                                TextColor="#00FFAA"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="/100"
+                                TextColor="White" />
+
+                        </HorizontalStackLayout>
+
+                        <!-- PROGRESS BAR -->
+                        <ProgressBar
+                            Progress="{Binding User.Exp, Converter={StaticResource ExpToProgressConverter}}"
+                            ScaleY="1.5" />
+
+                    </VerticalStackLayout>
+
+                </Frame>
+
+                <!-- CUSTOMIZATION -->
+                <Frame
+                    BackgroundColor="#33222222"
+                    BorderColor="#55FFFFFF"
+                    CornerRadius="18"
+                    Padding="18"
+                    HasShadow="False">
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label
+                            Text="Current Customization"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                        <Label
+                            Text="{Binding User.CurrentNpcId, StringFormat='NPC ID : {0}'}"
+                            TextColor="White" />
+
+                        <Label
+                            Text="{Binding User.CurrentBackgroundId, StringFormat='Background ID : {0}'}"
+                            TextColor="White" />
+
+                    </VerticalStackLayout>
+
+                </Frame>
+
+                <!-- SAVE BUTTON -->
+                <Button
+                    Text="Save Profile"
+                    Command="{Binding SaveProfileCommand}"
+                    WidthRequest="220"
+                    HeightRequest="58"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#4960D8"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    CornerRadius="18"
+                    Margin="0,20,0,0" />
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
 </ContentPage>

@@ -6,23 +6,22 @@
     xmlns:views="clr-namespace:Simulantara.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <TabBar>
+    <!-- Dashboard -->
+    <ShellContent
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate views:DashboardPage}"
+        Route="DashboardPage" />
 
-        <ShellContent
-            Title="Dashboard"
-            ContentTemplate="{DataTemplate views:DashboardPage}"
-            Route="DashboardPage" />
+    <!-- Habit -->
+    <ShellContent
+        Title="Habits"
+        ContentTemplate="{DataTemplate views:HabitManagePage}"
+        Route="HabitManagePage" />
 
-        <ShellContent
-            Title="Add Habit"
-            ContentTemplate="{DataTemplate views:AddHabitPage}"
-            Route="AddHabitPage" />
-
-        <ShellContent
-            Title="Profile"
-            ContentTemplate="{DataTemplate views:ProfilePage}"
-            Route="ProfilePage" />
-
-    </TabBar>
+    <!-- Profile -->
+    <ShellContent
+        Title="Profile"
+        ContentTemplate="{DataTemplate views:ProfilePage}"
+        Route="ProfilePage" />
 
 </Shell>

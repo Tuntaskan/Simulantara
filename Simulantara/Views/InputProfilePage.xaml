@@ -1,12 +1,199 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Simulantara.Views.InputProfilePage"
-             Title="InputProfilePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Simulantara.Views.InputProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:Simulantara.Models"
+    Title="Input Profile"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="background0.jpeg"
+            Aspect="AspectFill" />
+
+        <!-- OVERLAY -->
+        <BoxView Color="#80000000" />
+
+        <!-- CONTENT -->
+        <ScrollView>
+
+            <VerticalStackLayout
+                Padding="30,60,30,40"
+                Spacing="22">
+
+                <!-- TITLE -->
+                <Label
+                    Text="Welcome To"
+                    HorizontalOptions="Center"
+                    FontSize="24"
+                    TextColor="White" />
+
+                <!-- LOGO -->
+                <Image
+                    Source="simulantara_logo.png"
+                    HeightRequest="90"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center" />
+
+                <!-- SUBTITLE -->
+                <Label
+                    Text="Create Your Profile"
+                    HorizontalOptions="Center"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    Margin="0,20,0,10" />
+
+                <!-- PROFILE IMAGE -->
+                <Frame
+                    HeightRequest="130"
+                    WidthRequest="130"
+                    CornerRadius="65"
+                    Padding="0"
+                    HasShadow="False"
+                    BorderColor="White"
+                    BackgroundColor="#D9D9D9"
+                    HorizontalOptions="Center">
+
+                    <Image
+                        Aspect="AspectFill">
+
+                        <Image.Triggers>
+
+                            <DataTrigger
+                                TargetType="Image"
+                                Binding="{Binding ProfileImage}"
+                                Value="{x:Null}">
+
+                                <Setter
+                                    Property="Source"
+                                    Value="default_profile.png" />
+
+                            </DataTrigger>
+
+                            <DataTrigger
+                                TargetType="Image"
+                                Binding="{Binding ProfileImage}"
+                                Value="">
+
+                                <Setter
+                                    Property="Source"
+                                    Value="default_profile.png" />
+
+                            </DataTrigger>
+
+                        </Image.Triggers>
+
+                        <Image.Source>
+                            <Binding Path="ProfileImage" />
+                        </Image.Source>
+
+                    </Image>
+
+                </Frame>
+
+                <!-- USERNAME -->
+                <Frame
+                    Padding="0"
+                    CornerRadius="18"
+                    BackgroundColor="#73665A"
+                    HasShadow="False">
+
+                    <Entry
+                        Text="{Binding Username}"
+                        Placeholder="Enter Username"
+                        PlaceholderColor="#DDDDDD"
+                        TextColor="White"
+                        FontSize="20"
+                        BackgroundColor="Transparent"
+                        HorizontalTextAlignment="Center"
+                        Margin="15,6" />
+
+                </Frame>
+
+                <!-- GENDER PICKER -->
+                <VerticalStackLayout Spacing="10">
+
+                    <Label
+                        Text="Choose Gender"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalOptions="Center" />
+
+                    <Picker
+                        Title="Select Gender"
+                        ItemsSource="{Binding Genders}"
+                        SelectedItem="{Binding SelectedGender}"
+                        TitleColor="White"
+                        TextColor="White"
+                        BackgroundColor="#73665A" />
+
+                </VerticalStackLayout>
+
+                <!-- PICK PHOTO -->
+                <Button
+                    Text="Choose Photo"
+                    Command="{Binding PickPhotoCommand}"
+                    BackgroundColor="#73665A"
+                    TextColor="White"
+                    CornerRadius="16"
+                    HeightRequest="50" />
+
+                <!-- INFO -->
+                <Frame
+                    BackgroundColor="#33222222"
+                    BorderColor="#55FFFFFF"
+                    CornerRadius="16"
+                    Padding="15"
+                    HasShadow="False">
+
+                    <VerticalStackLayout Spacing="5">
+
+                        <Label
+                            Text="Starter Rewards"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                        <Label
+                            Text="• Level 1"
+                            TextColor="White" />
+
+                        <Label
+                            Text="• Default NPC"
+                            TextColor="White" />
+
+                        <Label
+                            Text="• Default Background"
+                            TextColor="White" />
+
+                    </VerticalStackLayout>
+
+                </Frame>
+
+                <!-- START BUTTON -->
+                <Button
+                    Text="Let's Start!"
+                    Command="{Binding SaveProfileCommand}"
+                    WidthRequest="200"
+                    HeightRequest="58"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#4960D8"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    CornerRadius="18"
+                    Margin="0,20,0,0" />
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
 </ContentPage>

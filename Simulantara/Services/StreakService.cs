@@ -4,49 +4,44 @@ namespace Simulantara.Services;
 
 public class StreakService
 {
-    private readonly DatabaseService _databaseService;
-    private readonly UserService _userService;
+    private readonly DatabaseService _database;
 
-    public StreakService(
-        DatabaseService databaseService,
-        UserService userService)
+    public StreakService(DatabaseService database)
     {
-        _databaseService = databaseService;
-        _userService = userService;
+        _database = database;
     }
 
-    public async Task UpdateStreakAsync()
+    public async Task UpdateStreakAsync(Habit habit)
     {
-        var user = await _userService.GetUserAsync();
+        await _database.InitAsync();
 
-        if (user == null)
-            return;
+        var today = DateTime.Now.Date;
 
-        var latestProgress = await _databaseService
-            .GetConnection()
-            .Table<HabitProgress>()
-            .OrderByDescending(x => x.ProgressDate)
-            .FirstOrDefaultAsync();
-
-        if (latestProgress == null)
-            return;
-
-        var difference = (DateTime.Now.Date - latestProgress.ProgressDate.Date).Days;
-
-        if (difference == 1)
+        if (string.IsNullOrEmpty(habit.LastProgressDate))
         {
-            user.CurrentStreak++;
+            habit.Streak = 1;
         }
-        else if (difference > 1)
+        else
         {
-            user.CurrentStreak = 0;
-        }
+            var lastDate =
+                DateTime.Parse(habit.LastProgressDate);
 
-        if (user.CurrentStreak > user.HighestStreak)
-        {
-            user.HighestStreak = user.CurrentStreak;
+            var diff =
+                (today - lastDate.Date).Days;
+
+            if (diff == 1)
+            {
+                habit.Streak++;
+            }
+            else if (diff > 1)
+            {
+                habit.Streak = 1;
+            }
         }
 
-        await _userService.SaveUserAsync(user);
+        habit.LastProgressDate =
+            today.ToString("yyyy-MM-dd");
+
+        await _database.SaveHabitAsync(habit);
     }
 }

@@ -4,79 +4,47 @@ namespace Simulantara.Services;
 
 public class HabitService
 {
-    private readonly DatabaseService _databaseService;
+    private readonly DatabaseService _database;
 
-    public HabitService(DatabaseService databaseService)
+    public HabitService(DatabaseService database)
     {
-        _databaseService = databaseService;
+        _database = database;
     }
-
-    // HABIT CRUD
 
     public async Task<List<Habit>> GetHabitsAsync()
     {
-        return await _databaseService
-            .GetConnection()
-            .Table<Habit>()
-            .ToListAsync();
-    }
+        await _database.InitAsync();
 
-    public async Task<int> SaveHabitAsync(Habit habit)
-    {
-        if (habit.HabitId != 0)
+        var habits = await _database.GetHabitsAsync();
+
+        foreach (var habit in habits)
         {
-            return await _databaseService
-                .GetConnection()
-                .UpdateAsync(habit);
+            habit.Category =
+                await _database.GetCategoryByIdAsync(
+                    habit.CategoryId);
         }
 
-        habit.CreatedAt = DateTime.Now;
-        habit.IsActive = true;
-
-        return await _databaseService
-            .GetConnection()
-            .InsertAsync(habit);
+        return habits;
     }
 
-    public async Task<int> DeleteHabitAsync(Habit habit)
+    public async Task AddHabitAsync(Habit habit)
     {
-        return await _databaseService
-            .GetConnection()
-            .DeleteAsync(habit);
+        await _database.InitAsync();
+
+        await _database.SaveHabitAsync(habit);
     }
 
-    // CATEGORY
-
-    public async Task<List<HabitCategory>> GetCategoriesAsync()
+    public async Task UpdateHabitAsync(Habit habit)
     {
-        return await _databaseService
-            .GetConnection()
-            .Table<HabitCategory>()
-            .ToListAsync();
+        await _database.InitAsync();
+
+        await _database.SaveHabitAsync(habit);
     }
 
-    public async Task<int> SaveCategoryAsync(HabitCategory category)
+    public async Task DeleteHabitAsync(Habit habit)
     {
-        return await _databaseService
-            .GetConnection()
-            .InsertAsync(category);
-    }
+        await _database.InitAsync();
 
-    // PROGRESS
-
-    public async Task<List<HabitProgress>> GetHabitProgressAsync(int habitId)
-    {
-        return await _databaseService
-            .GetConnection()
-            .Table<HabitProgress>()
-            .Where(x => x.HabitId == habitId)
-            .ToListAsync();
-    }
-
-    public async Task<int> AddProgressAsync(HabitProgress progress)
-    {
-        return await _databaseService
-            .GetConnection()
-            .InsertAsync(progress);
+        await _database.DeleteHabitAsync(habit);
     }
 }

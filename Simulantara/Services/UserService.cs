@@ -4,43 +4,43 @@ namespace Simulantara.Services;
 
 public class UserService
 {
-    private readonly DatabaseService _databaseService;
+    private readonly DatabaseService _database;
 
-    public UserService(DatabaseService databaseService)
+    public UserService(DatabaseService database)
     {
-        _databaseService = databaseService;
+        _database = database;
     }
 
     public async Task<User?> GetUserAsync()
     {
-        return await _databaseService
-            .GetConnection()
-            .Table<User>()
-            .FirstOrDefaultAsync();
+        await _database.InitAsync();
+        return await _database.GetUserAsync();
     }
 
-    public async Task<int> SaveUserAsync(User user)
+    public async Task SaveUserAsync(User user)
     {
-        if (user.UserId != 0)
-        {
-            return await _databaseService
-                .GetConnection()
-                .UpdateAsync(user);
-        }
-
-        user.CreatedAt = DateTime.Now;
-        user.Level = 1;
-        user.Exp = 0;
-
-        return await _databaseService
-            .GetConnection()
-            .InsertAsync(user);
+        await _database.InitAsync();
+        await _database.SaveUserAsync(user);
     }
 
-    public async Task<int> DeleteUserAsync(User user)
+    public async Task<bool> HasProfileAsync()
     {
-        return await _databaseService
-            .GetConnection()
-            .DeleteAsync(user);
+        await _database.InitAsync();
+
+        var user = await _database.GetUserAsync();
+
+        return user != null;
+    }
+
+    public async Task<NPC?> GetCurrentNpcAsync(int npcId)
+    {
+        await _database.InitAsync();
+        return await _database.GetNpcByIdAsync(npcId);
+    }
+
+    public async Task<Background?> GetCurrentBackgroundAsync(int backgroundId)
+    {
+        await _database.InitAsync();
+        return await _database.GetBackgroundByIdAsync(backgroundId);
     }
 }

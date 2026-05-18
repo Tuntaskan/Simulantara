@@ -5,21 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 
-namespace Simulantara.Models
+namespace Simulantara.Models;
+
+public class HabitProgress
 {
-    public class HabitProgress
-    {
-        [PrimaryKey, AutoIncrement]
-        public int ProgressId { get; set; }
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
 
-        public int HabitId { get; set; }
+    public int HabitId { get; set; }
 
-        public DateTime ProgressDate { get; set; }
+    public string ProgressDate { get; set; }
+        = DateTime.Now.ToString("yyyy-MM-dd");
 
-        public string Note { get; set; }
-
-        public int ExpEarned { get; set; } = 10;
-
-        public bool IsCompleted { get; set; }
-    }
+    public string? Note { get; set; }
 }

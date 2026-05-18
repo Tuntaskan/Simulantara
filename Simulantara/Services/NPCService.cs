@@ -4,25 +4,43 @@ namespace Simulantara.Services;
 
 public class NPCService
 {
-    private readonly DatabaseService _databaseService;
+    private readonly DatabaseService _database;
 
-    public NPCService(DatabaseService databaseService)
+    public NPCService(DatabaseService database)
     {
-        _databaseService = databaseService;
+        _database = database;
     }
 
-    public async Task<NPCMessage?> GetRandomMessageAsync()
+    public async Task<List<NPC>> GetUnlockedNPCsAsync()
     {
-        var messages = await _databaseService
-            .GetConnection()
-            .Table<NPCMessage>()
-            .ToListAsync();
+        await _database.InitAsync();
 
-        if (!messages.Any())
-            return null;
+        var user = await _database.GetUserAsync();
 
-        Random random = new();
+        if (user == null)
+            return new List<NPC>();
 
-        return messages[random.Next(messages.Count)];
+        var npcs = await _database.GetNPCsAsync();
+
+        return npcs
+            .Where(x => x.UnlockLevel <= user.Level)
+            .ToList();
+    }
+
+    public async Task<List<Background>> GetUnlockedBackgroundsAsync()
+    {
+        await _database.InitAsync();
+
+        var user = await _database.GetUserAsync();
+
+        if (user == null)
+            return new List<Background>();
+
+        var backgrounds =
+            await _database.GetBackgroundsAsync();
+
+        return backgrounds
+            .Where(x => x.UnlockLevel <= user.Level)
+            .ToList();
     }
 }

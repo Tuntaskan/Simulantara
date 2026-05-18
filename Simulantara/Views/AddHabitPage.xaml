@@ -1,12 +1,179 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Simulantara.Views.AddHabitPage"
-             Title="AddHabitPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+<ContentPage
+    x:Class="Simulantara.Views.AddHabitPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:Simulantara.ViewModels"
+    xmlns:models="clr-namespace:Simulantara.Models"
+    x:DataType="viewmodels:AddHabitViewModel"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="bg_default.png"
+            Aspect="AspectFill" />
+
+        <!-- DARK OVERLAY -->
+        <BoxView Color="#88000000" />
+
+        <ScrollView>
+
+            <VerticalStackLayout
+                Spacing="20">
+
+                <!-- ================= HEADER ================= -->
+                <Frame
+                    HeightRequest="100"
+                    CornerRadius="0"
+                    Padding="25,45,25,15"
+                    BackgroundColor="#7E776E"
+                    HasShadow="False">
+
+                    <Grid ColumnDefinitions="Auto,*">
+
+                        <!-- BACK BUTTON -->
+                        <Frame
+                            HeightRequest="45"
+                            WidthRequest="45"
+                            Padding="0"
+                            CornerRadius="14"
+                            BackgroundColor="#D9E0E3"
+                            HasShadow="False"
+                            VerticalOptions="Center">
+
+                            <ImageButton
+                                Source="back.png"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BackCommand}" />
+
+                        </Frame>
+
+                        <!-- TITLE -->
+                        <Label
+                            Grid.Column="1"
+                            Text="Add Habit"
+                            FontSize="26"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                </Frame>
+
+                <!-- ================= FORM ================= -->
+                <VerticalStackLayout
+                    Padding="25,0,25,40"
+                    Spacing="20">
+
+                    <!-- HABIT NAME -->
+                    <Label
+                        Text="Habit Name"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Frame
+                        Padding="0"
+                        CornerRadius="16"
+                        BackgroundColor="#CC1E1E1E"
+                        BorderColor="#33FFFFFF"
+                        HasShadow="False">
+
+                        <Entry
+                            Placeholder="Masukkan nama habit"
+                            PlaceholderColor="#BBBBBB"
+                            Text="{Binding HabitName}"
+                            TextColor="White"
+                            FontSize="17"
+                            BackgroundColor="Transparent"
+                            Margin="15,8" />
+
+                    </Frame>
+
+                    <!-- CATEGORY -->
+                    <Label
+                        Text="Category"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Frame
+                        Padding="10,5"
+                        CornerRadius="16"
+                        BackgroundColor="#CC1E1E1E"
+                        BorderColor="#33FFFFFF"
+                        HasShadow="False">
+
+                        <Picker
+                            Title="Pilih Category"
+                            TitleColor="#BBBBBB"
+                            ItemsSource="{Binding Categories}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            TextColor="White"
+                            BackgroundColor="Transparent" />
+
+                    </Frame>
+
+                    <!-- MANAGE CATEGORY -->
+                    <Button
+                        Text="+ Manage Category"
+                        HeightRequest="45"
+                        CornerRadius="14"
+                        BackgroundColor="#FF3B5F"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Command="{Binding GoToManageCategoryCommand}" />
+
+                    <!-- DESCRIPTION -->
+                    <Label
+                        Text="Description"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Frame
+                        Padding="0"
+                        CornerRadius="18"
+                        BackgroundColor="#CC1E1E1E"
+                        BorderColor="#33FFFFFF"
+                        HasShadow="False">
+
+                        <Editor
+                            Text="{Binding Description}"
+                            Placeholder="Tulis detail habit..."
+                            PlaceholderColor="#BBBBBB"
+                            TextColor="White"
+                            FontSize="16"
+                            HeightRequest="170"
+                            BackgroundColor="Transparent"
+                            Margin="15,12" />
+
+                    </Frame>
+
+                    <!-- SAVE BUTTON -->
+                    <Button
+                        Text="Save Habit"
+                        HeightRequest="55"
+                        CornerRadius="18"
+                        BackgroundColor="#4960D8"
+                        TextColor="White"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        Command="{Binding SaveHabitCommand}" />
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
 </ContentPage>

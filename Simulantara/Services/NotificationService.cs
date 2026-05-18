@@ -2,11 +2,22 @@
 
 public class NotificationService
 {
-    public async Task ShowNPCPopup(string message)
+    private readonly List<string> _messages =
+        new()
+        {
+            "Semangat! Kamu hebat hari ini!",
+            "Jangan menyerah sekarang!",
+            "Sedikit progress tetap progress!",
+            "Ayo lanjut streak kamu!",
+            "Konsisten lebih penting daripada sempurna!"
+        };
+
+    public string GetRandomMessage()
     {
-        await Application.Current.MainPage.DisplayAlert(
-            "NPC Simulantara",
-            message,
-            "OK");
+        Random random = new();
+
+        int index = random.Next(_messages.Count);
+
+        return _messages[index];
     }
 }

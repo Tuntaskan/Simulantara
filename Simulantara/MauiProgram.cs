@@ -2,6 +2,7 @@
 using Simulantara.Services;
 using Simulantara.ViewModels;
 using Simulantara.Views;
+using CommunityToolkit.Maui;
 
 namespace Simulantara;
 
@@ -13,36 +14,52 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // DATABASE
-        builder.Services.AddSingleton<DatabaseService>();
+        builder.Services.AddSingleton<AppShell>();
 
+        // =========================
         // SERVICES
+        // =========================
+        builder.Services.AddSingleton<DatabaseService>();
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<HabitService>();
-        builder.Services.AddSingleton<ExpService>();
-        builder.Services.AddSingleton<StreakService>();
-        builder.Services.AddSingleton<NPCService>();
+        builder.Services.AddSingleton<ProgressService>();
+        builder.Services.AddSingleton<LevelService>();
         builder.Services.AddSingleton<NotificationService>();
+        builder.Services.AddSingleton<NPCService>();
+        builder.Services.AddSingleton<StreakService>();
 
+        // =========================
         // VIEWMODELS
-        builder.Services.AddTransient<DashboardViewModel>();
-        builder.Services.AddTransient<AddHabitViewModel>();
-        builder.Services.AddTransient<HabitDetailViewModel>();
-        builder.Services.AddTransient<ProfileViewModel>();
+        // =========================
         builder.Services.AddTransient<InputProfileViewModel>();
+        builder.Services.AddTransient<DashboardViewModel>();
+        builder.Services.AddTransient<HabitManageViewModel>();
+        builder.Services.AddTransient<HabitDetailViewModel>();
+        builder.Services.AddTransient<AddHabitViewModel>();
+        builder.Services.AddTransient<ManageCategoryViewModel>();
+        builder.Services.AddTransient<ProfileViewModel>();
+        builder.Services.AddTransient<NpcCustomViewModel>();
+        builder.Services.AddTransient<BackgroundCustomViewModel>();
 
-        // PAGES
-        builder.Services.AddTransient<DashboardPage>();
-        builder.Services.AddTransient<AddHabitPage>();
-        builder.Services.AddTransient<HabitDetailPage>();
-        builder.Services.AddTransient<ProfilePage>();
+        // =========================
+        // VIEWS
+        // =========================
         builder.Services.AddTransient<InputProfilePage>();
+        builder.Services.AddTransient<DashboardPage>();
+        builder.Services.AddTransient<HabitManagePage>();
+        builder.Services.AddTransient<HabitDetailPage>();
+        builder.Services.AddTransient<AddHabitPage>();
+        builder.Services.AddTransient<ManageCategoryPage>();
+        builder.Services.AddTransient<ProfilePage>();
+        builder.Services.AddTransient<NpcCustomPage>();
+        builder.Services.AddTransient<BackgroundCustomPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -1,12 +1,338 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Simulantara.Views.HabitDetailPage"
-             Title="HabitDetailPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Simulantara.Views.HabitDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:Simulantara.ViewModels"
+    xmlns:models="clr-namespace:Simulantara.Models"
+    x:DataType="viewmodels:HabitDetailViewModel"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="bg_default.png"
+            Aspect="AspectFill" />
+
+        <!-- OVERLAY -->
+        <BoxView Color="#88000000" />
+
+        <ScrollView>
+
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="0,0,0,40">
+
+                <!-- ================= HEADER ================= -->
+                <Frame
+                    HeightRequest="105"
+                    CornerRadius="0"
+                    Padding="25,45,25,15"
+                    BackgroundColor="#7E776E"
+                    HasShadow="False">
+
+                    <Grid ColumnDefinitions="Auto,*">
+
+                        <!-- BACK BUTTON -->
+                        <Frame
+                            HeightRequest="45"
+                            WidthRequest="45"
+                            Padding="0"
+                            CornerRadius="14"
+                            BackgroundColor="#D9E0E3"
+                            HasShadow="False"
+                            VerticalOptions="Center">
+
+                            <Button
+                                Text="←"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"
+                                TextColor="#4B433A"
+                                Clicked="BackButton_Clicked" />
+
+                        </Frame>
+
+                        <!-- TITLE -->
+                        <Label
+                            Grid.Column="1"
+                            Text="Habit Detail"
+                            FontSize="26"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                </Frame>
+
+                <!-- ================= HABIT INFO ================= -->
+                <Frame
+                    Margin="25,0"
+                    Padding="20"
+                    CornerRadius="25"
+                    BackgroundColor="#CC1E1E1E"
+                    BorderColor="#33FFFFFF"
+                    HasShadow="False">
+
+                    <VerticalStackLayout Spacing="18">
+
+                        <!-- HABIT NAME -->
+                        <HorizontalStackLayout Spacing="15">
+
+                            <Frame
+                                HeightRequest="55"
+                                WidthRequest="55"
+                                Padding="0"
+                                CornerRadius="28"
+                                BackgroundColor="#FF3B5F"
+                                HasShadow="False"
+                                VerticalOptions="Center">
+
+                                <Image
+                                    Source="habiticon.png"
+                                    HeightRequest="28"
+                                    WidthRequest="28"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Frame>
+
+                            <VerticalStackLayout
+                                VerticalOptions="Center"
+                                Spacing="2">
+
+                                <Label
+                                    Text="{Binding SelectedHabit.Name}"
+                                    FontSize="24"
+                                    FontAttributes="Bold"
+                                    TextColor="White" />
+
+                                <HorizontalStackLayout
+                                    Spacing="6">
+
+                                    <Image
+                                        Source="fire.png"
+                                        HeightRequest="18"
+                                        WidthRequest="18" />
+
+                                    <Label
+                                        Text="{Binding SelectedHabit.Streak}"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="#FFD166" />
+
+                                    <Label
+                                        Text="Day Streak"
+                                        FontSize="14"
+                                        TextColor="#DDDDDD" />
+
+                                </HorizontalStackLayout>
+
+                            </VerticalStackLayout>
+
+                        </HorizontalStackLayout>
+
+                        <!-- DESCRIPTION -->
+                        <Frame
+                            Padding="15"
+                            CornerRadius="18"
+                            BackgroundColor="#FF3B5F"
+                            HasShadow="False">
+
+                            <VerticalStackLayout Spacing="10">
+
+                                <Frame
+                                    Padding="10,5"
+                                    CornerRadius="12"
+                                    BackgroundColor="#4960D8"
+                                    HasShadow="False"
+                                    HorizontalOptions="Start">
+
+                                    <Label
+                                        Text="Description"
+                                        FontSize="14"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                </Frame>
+
+                                <Label
+                                    Text="{Binding SelectedHabit.Description}"
+                                    FontSize="15"
+                                    TextColor="White"
+                                    LineBreakMode="WordWrap" />
+
+                            </VerticalStackLayout>
+
+                        </Frame>
+
+                    </VerticalStackLayout>
+
+                </Frame>
+
+                <!-- ================= PROGRESS HEADER ================= -->
+                <Grid
+                    Padding="25,0"
+                    ColumnDefinitions="*,Auto">
+
+                    <VerticalStackLayout Spacing="3">
+
+                        <Label
+                            Text="Progress History"
+                            FontSize="22"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                        <Label
+                            Text="Lingkaran hijau berarti progress berhasil"
+                            FontSize="14"
+                            TextColor="#D6D6D6" />
+
+                    </VerticalStackLayout>
+
+                    <!-- ADD PROGRESS BUTTON -->
+                    <Frame
+                        HeightRequest="55"
+                        WidthRequest="55"
+                        Padding="0"
+                        CornerRadius="18"
+                        BackgroundColor="#4960D8"
+                        HasShadow="False"
+                        VerticalOptions="Center">
+
+                        <ImageButton
+                            Source="check.png"
+                            BackgroundColor="Transparent"
+                            Command="{Binding AddProgressCommand}" />
+
+                    </Frame>
+
+                </Grid>
+
+                <!-- ================= PROGRESS LIST ================= -->
+                <CollectionView
+                    ItemsSource="{Binding Progresses}"
+                    Margin="25,0"
+                    SelectionMode="None">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="7"
+                            VerticalItemSpacing="14"
+                            HorizontalItemSpacing="14" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="models:HabitProgress">
+
+                            <VerticalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="5">
+
+                                <!-- PROGRESS CIRCLE -->
+                                <Frame
+                                    HeightRequest="38"
+                                    WidthRequest="38"
+                                    Padding="0"
+                                    CornerRadius="19"
+                                    BackgroundColor="#A4E86B"
+                                    BorderColor="#DDFFFFFF"
+                                    HasShadow="False">
+
+                                    <Image
+                                        Source="check.png"
+                                        HeightRequest="16"
+                                        WidthRequest="16"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+
+                                </Frame>
+
+                                <!-- DATE -->
+                                <Label
+                                    Text="{Binding ProgressDate}"
+                                    FontSize="10"
+                                    TextColor="White"
+                                    HorizontalTextAlignment="Center"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1" />
+
+                            </VerticalStackLayout>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <!-- ================= EMPTY STATE ================= -->
+                <VerticalStackLayout
+                    Margin="0,15,0,0"
+                    Spacing="12"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasNoProgress}">
+
+                    <Image
+                        Source="habit_empty.png"
+                        HeightRequest="110"
+                        WidthRequest="110"
+                        Opacity="0.9" />
+
+                    <Label
+                        Text="Belum ada progress"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center" />
+
+                    <Label
+                        Text="Tekan tombol centang untuk input progress hari ini"
+                        FontSize="14"
+                        TextColor="#DDDDDD"
+                        HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
+
+                <!-- ================= BUTTONS ================= -->
+                <HorizontalStackLayout
+                    Margin="25,5,25,0"
+                    Spacing="15">
+
+                    <!-- INPUT PROGRESS -->
+                    <Button
+                        Text="+ Input Progress"
+                        HeightRequest="55"
+                        CornerRadius="18"
+                        BackgroundColor="#4960D8"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding AddProgressCommand}" />
+
+                    <!-- EDIT -->
+                    <Button
+                        Text="Edit"
+                        HeightRequest="55"
+                        WidthRequest="110"
+                        CornerRadius="18"
+                        BackgroundColor="#FF3B5F"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16" />
+
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
 </ContentPage>

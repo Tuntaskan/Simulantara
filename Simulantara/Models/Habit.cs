@@ -5,25 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 
-namespace Simulantara.Models
+namespace Simulantara.Models;
+
+public class Habit
 {
-    public class Habit
-    {
-        [PrimaryKey, AutoIncrement]
-        public int HabitId { get; set; }
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
 
-        public int UserId { get; set; }
+    public string Name { get; set; } = "";
 
-        public int CategoryId { get; set; }
+    public string Description { get; set; } = "";
 
-        public string HabitName { get; set; }
+    public int CategoryId { get; set; }
 
-        public string HabitDetail { get; set; }
+    public int Streak { get; set; } = 0;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public string? LastProgressDate { get; set; }
 
-        public bool IsActive { get; set; } = true;
+    public string CreatedAt { get; set; }
+        = DateTime.Now.ToString("yyyy-MM-dd");
 
-        public DateTime StartDate { get; set; } = DateTime.Now;
-    }
+    [Ignore]
+    public Category? Category { get; set; }
 }

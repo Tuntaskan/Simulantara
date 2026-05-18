@@ -1,13 +1,483 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Simulantara.Views.DashboardPage"
-             Title="DashboardPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <WebView x:Name="MyWebView" />
-    </VerticalStackLayout>
+
+<ContentPage
+    x:Class="Simulantara.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:Simulantara.Models"
+    x:Name="ThisPage"
+    BackgroundColor="Black"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+
+        <!-- BACKGROUND -->
+        <Image
+            Source="{Binding CurrentBackground.Image}"
+            Aspect="AspectFill" />
+
+        <!-- OVERLAY -->
+        <BoxView Color="#66000000" />
+
+        <!-- ================= MAIN LAYOUT ================= -->
+        <Grid RowDefinitions="Auto,*,95">
+
+            <!-- ================= HEADER ================= -->
+            <Grid
+                Padding="25,55,25,15"
+                ColumnDefinitions="*,Auto">
+
+                <VerticalStackLayout 
+                    Spacing="4">
+
+                    <Label
+                        Text="Dashboard"
+                        FontSize="32"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Label
+                        Text="Welcome back to Simulantara"
+                        FontSize="15"
+                        TextColor="#E0E0E0" />
+
+                </VerticalStackLayout>
+
+                <!-- USERNAME -->
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding User.Username}"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+            </Grid>
+
+            <!-- ================= CONTENT ================= -->
+            <ScrollView Grid.Row="1">
+
+                <VerticalStackLayout
+                    Padding="20,10,20,20"
+                    Spacing="20">
+
+                    <!-- ================= LEVEL SECTION ================= -->
+                    <Frame
+                        Padding="15"
+                        BackgroundColor="#1E1E1E"
+                        CornerRadius="20"
+                        BorderColor="#404040"
+                        HasShadow="False">
+
+                        <Grid ColumnDefinitions="*,90">
+
+                            <VerticalStackLayout Spacing="12">
+
+                                <!-- TITLE -->
+                                <Label
+                                    Text="Level Progress"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    TextColor="White" />
+
+                                <!-- LEVEL -->
+                                <HorizontalStackLayout Spacing="10">
+
+                                    <Label
+                                        Text="Level"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="{Binding User.Level}"
+                                        TextColor="#FFD700"
+                                        FontAttributes="Bold" />
+
+                                </HorizontalStackLayout>
+
+                                <!-- EXP -->
+                                <HorizontalStackLayout Spacing="10">
+
+                                    <Label
+                                        Text="EXP"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="{Binding User.Exp}"
+                                        TextColor="#00FFAA"
+                                        FontAttributes="Bold" />
+
+                                    <Label
+                                        Text="/100"
+                                        TextColor="White" />
+
+                                </HorizontalStackLayout>
+
+                                <!-- PROGRESS BAR -->
+                                <Grid>
+
+                                    <ProgressBar
+                                        HeightRequest="18"
+                                        ScaleY="1.5"
+                                        Progress="{Binding User.Exp, Converter={StaticResource ExpToProgressConverter}}"
+                                        ProgressColor="#7ED957"
+                                        BackgroundColor="#444444" />
+
+                                    <Label
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        FontSize="12"
+                                        FontAttributes="Bold"
+                                        TextColor="Black">
+
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding User.Exp}" />
+                                                <Span Text="/100 EXP" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+
+                                    </Label>
+
+                                </Grid>
+
+                            </VerticalStackLayout>
+
+                            <!-- PROFILE -->
+                            <Frame
+                                Grid.Column="1"
+                                Padding="0"
+                                HeightRequest="80"
+                                WidthRequest="80"
+                                CornerRadius="40"
+                                BorderColor="White"
+                                BackgroundColor="#DDDDDD"
+                                HorizontalOptions="End"
+                                HasShadow="False">
+
+                                <Image
+                                    Aspect="AspectFill"
+                                    Source="{Binding User.ProfileImage}" />
+
+                            </Frame>
+
+                        </Grid>
+
+                    </Frame>
+
+                    <!-- ================= NPC MESSAGE ================= -->
+                    <Frame
+                        Padding="15,10"
+                        BackgroundColor="White"
+                        CornerRadius="18"
+                        HasShadow="False"
+                        HorizontalOptions="Start"
+                        MaximumWidthRequest="260">
+
+                        <Label
+                            Text="{Binding NpcMessage}"
+                            FontSize="15"
+                            TextColor="Black" />
+
+                    </Frame>
+
+                    <!-- ================= HABIT LIST ================= -->
+                    <Frame
+                        Padding="15"
+                        BackgroundColor="#5B7BE0"
+                        CornerRadius="20"
+                        HasShadow="False">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Label
+                                Text="Your Habits"
+                                FontSize="20"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                            <CollectionView
+                                ItemsSource="{Binding Habits}"
+                                SelectionMode="None">
+
+                                <CollectionView.EmptyView>
+
+                                    <Label
+                                        Text="Belum ada habit"
+                                        HorizontalOptions="Center"
+                                        TextColor="White"
+                                        FontSize="15" />
+
+                                </CollectionView.EmptyView>
+
+                                <CollectionView.ItemTemplate>
+
+                                    <DataTemplate
+                                        x:DataType="model:Habit">
+
+                                        <Frame
+                                            Margin="0,5"
+                                            Padding="12"
+                                            CornerRadius="16"
+                                            BackgroundColor="White"
+                                            HasShadow="False">
+
+                                            <Grid ColumnDefinitions="*,Auto">
+
+                                                <VerticalStackLayout Spacing="5">
+
+                                                    <Label
+                                                        Text="{Binding Name}"
+                                                        FontSize="16"
+                                                        FontAttributes="Bold"
+                                                        TextColor="Black" />
+
+                                                    <Label
+                                                        Text="{Binding Description}"
+                                                        FontSize="13"
+                                                        TextColor="#444444"
+                                                        MaxLines="2"
+                                                        LineBreakMode="TailTruncation" />
+
+                                                    <Label
+                                                        FontSize="12"
+                                                        TextColor="#FF9800">
+
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span Text="🔥 " />
+                                                                <Span Text="{Binding Streak}" />
+                                                                <Span Text=" streak" />
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+
+                                                    </Label>
+
+                                                </VerticalStackLayout>
+
+                                                <!-- OPEN BUTTON -->
+                                                <Button
+                                                    Grid.Column="1"
+                                                    Text="Open"
+                                                    HeightRequest="40"
+                                                    CornerRadius="12"
+                                                    BackgroundColor="#5B7BE0"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center" 
+                                                    Command="{Binding BindingContext.OpenHabitDetailCommand, Source={x:Reference ThisPage}}"
+                                                    CommandParameter="{Binding .}"/>
+
+                                            </Grid>
+
+                                        </Frame>
+
+                                    </DataTemplate>
+
+                                </CollectionView.ItemTemplate>
+
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+
+                    </Frame>
+
+                    <!-- ================= NPC ================= -->
+                    <Grid HeightRequest="350">
+
+                        <Image
+                            Source="{Binding CurrentNpc.Image}"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Center"
+                            VerticalOptions="End" />
+
+                    </Grid>
+
+                    <!-- ================= STREAK ================= -->
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            TextColor="White">
+
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="🔥 Total Habit : " />
+                                    <Span Text="{Binding Habits.Count}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+
+                        </Label>
+
+                        <CollectionView
+                            ItemsSource="{Binding Habits}"
+                            ItemsLayout="HorizontalList"
+                            SelectionMode="None">
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="model:Habit">
+
+                                    <VerticalStackLayout
+                                        WidthRequest="70"
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+
+                                        <!-- STREAK CIRCLE -->
+                                        <Frame
+                                            HeightRequest="40"
+                                            WidthRequest="40"
+                                            Padding="0"
+                                            CornerRadius="20"
+                                            BackgroundColor="#7ED957"
+                                            BorderColor="White"
+                                            HasShadow="False"
+                                            HorizontalOptions="Center">
+
+                                            <Label
+                                                Text="{Binding Streak}"
+                                                TextColor="White"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                                        </Frame>
+
+                                        <Label
+                                            Text="{Binding Name}"
+                                            FontSize="10"
+                                            HorizontalTextAlignment="Center"
+                                            TextColor="White"
+                                            MaxLines="1"
+                                            LineBreakMode="TailTruncation" />
+
+                                    </VerticalStackLayout>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+
+                    <!-- ================= QUICK ACTION ================= -->
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="15">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="Manage Habit"
+                            Command="{Binding OpenHabitManageCommand}"
+                            HeightRequest="55"
+                            CornerRadius="18"
+                            BackgroundColor="#7ED957"
+                            TextColor="White"
+                            FontAttributes="Bold" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Profile"
+                            Command="{Binding OpenProfileCommand}"
+                            HeightRequest="55"
+                            CornerRadius="18"
+                            BackgroundColor="#5B7BE0"
+                            TextColor="White"
+                            FontAttributes="Bold" />
+
+                    </Grid>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+            <!-- ================= BOTTOM NAV ================= -->
+            <Grid
+                Grid.Row="2"
+                ColumnDefinitions="*,*,*,*"
+                BackgroundColor="#6A4B3C"
+                Padding="10">
+
+                <!-- DASHBOARD -->
+                <Frame
+                    Grid.Column="0"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0"
+                    CornerRadius="12"
+                    BackgroundColor="#FF3B5F"
+                    HasShadow="False"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <ImageButton
+                        Source="home.png"
+                        BackgroundColor="Transparent" />
+
+                </Frame>
+
+                <!-- HABIT -->
+                <Frame
+                    Grid.Column="1"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0"
+                    CornerRadius="12"
+                    BackgroundColor="#D9E0E3"
+                    HasShadow="False"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <ImageButton
+                        Source="addhabit.png"
+                        BackgroundColor="Transparent"
+                        Command="{Binding OpenHabitManageCommand}" />
+
+                </Frame>
+
+                <!-- PROFILE -->
+                <Frame
+                    Grid.Column="2"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0"
+                    CornerRadius="12"
+                    BackgroundColor="#D9E0E3"
+                    HasShadow="False"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <ImageButton
+                        Source="npc.png"
+                        BackgroundColor="Transparent"
+                        Command="{Binding OpenNpcCustomCommand}" />
+
+                </Frame>
+
+                <!-- CUSTOM -->
+                <Frame
+                    Grid.Column="3"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0"
+                    CornerRadius="12"
+                    BackgroundColor="#D9E0E3"
+                    HasShadow="False"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <ImageButton
+                        Source="background.png"
+                        BackgroundColor="Transparent" />
+
+                </Frame>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
 </ContentPage>

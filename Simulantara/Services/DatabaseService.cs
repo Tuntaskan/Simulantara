@@ -5,106 +5,228 @@ namespace Simulantara.Services;
 
 public class DatabaseService
 {
-    private readonly SQLiteAsyncConnection _database;
+    private SQLiteAsyncConnection _database;
 
-    public DatabaseService()
+    public async Task InitAsync()
     {
-        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "simulantara.db3");
+        if (_database != null)
+            return;
+
+        string dbPath = Path.Combine(
+            FileSystem.AppDataDirectory,
+            "simulantara.db");
 
         _database = new SQLiteAsyncConnection(dbPath);
 
-        InitializeDatabase();
-    }
-
-    private async void InitializeDatabase()
-    {
+        // =========================
+        // TABLES
+        // =========================
         await _database.CreateTableAsync<User>();
-        await _database.CreateTableAsync<HabitCategory>();
         await _database.CreateTableAsync<Habit>();
+        await _database.CreateTableAsync<Category>();
         await _database.CreateTableAsync<HabitProgress>();
-        await _database.CreateTableAsync<NPCMessage>();
+        await _database.CreateTableAsync<NPC>();
+        await _database.CreateTableAsync<Background>();
 
-        await SeedDefaultCategories();
-        await SeedNPCMessages();
+        // Seed default data
+        await SeedCategoriesAsync();
+        await SeedNPCsAsync();
+        await SeedBackgroundsAsync();
     }
 
-    public SQLiteAsyncConnection GetConnection()
+    // ======================================================
+    // USER
+    // ======================================================
+
+    public async Task<User?> GetUserAsync()
     {
-        return _database;
+        return await _database.Table<User>()
+            .FirstOrDefaultAsync();
     }
 
-    private async Task SeedDefaultCategories()
+    public async Task<int> SaveUserAsync(User user)
     {
-        var categories = await _database.Table<HabitCategory>().ToListAsync();
+        if (user.Id != 0)
+            return await _database.UpdateAsync(user);
 
-        if (categories.Count == 0)
+        return await _database.InsertAsync(user);
+    }
+
+    // ======================================================
+    // HABITS
+    // ======================================================
+
+    public async Task<List<Habit>> GetHabitsAsync()
+    {
+        return await _database.Table<Habit>().ToListAsync();
+    }
+
+    public async Task<int> SaveHabitAsync(Habit habit)
+    {
+        if (habit.Id != 0)
+            return await _database.UpdateAsync(habit);
+
+        return await _database.InsertAsync(habit);
+    }
+
+    public async Task<int> DeleteHabitAsync(Habit habit)
+    {
+        return await _database.DeleteAsync(habit);
+    }
+
+    // ======================================================
+    // CATEGORY
+    // ======================================================
+
+    public async Task<List<Category>> GetCategoriesAsync()
+    {
+        return await _database.Table<Category>().ToListAsync();
+    }
+
+    public async Task<int> SaveCategoryAsync(Category category)
+    {
+        if (category.Id != 0)
+            return await _database.UpdateAsync(category);
+
+        return await _database.InsertAsync(category);
+    }
+
+    public async Task<Category?> GetCategoryByIdAsync(int id)
+    {
+        return await _database.Table<Category>()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    // ======================================================
+    // PROGRESS
+    // ======================================================
+
+    public async Task<List<HabitProgress>> GetProgressByHabitAsync(int habitId)
+    {
+        return await _database.Table<HabitProgress>()
+            .Where(x => x.HabitId == habitId)
+            .ToListAsync();
+    }
+
+    public async Task<int> SaveProgressAsync(HabitProgress progress)
+    {
+        return await _database.InsertAsync(progress);
+    }
+
+    // ======================================================
+    // NPC
+    // ======================================================
+
+    public async Task<List<NPC>> GetNPCsAsync()
+    {
+        return await _database.Table<NPC>().ToListAsync();
+    }
+
+    // ======================================================
+    // BACKGROUND
+    // ======================================================
+
+    public async Task<List<Background>> GetBackgroundsAsync()
+    {
+        return await _database.Table<Background>().ToListAsync();
+    }
+
+    // ======================================================
+    // SEED DATA
+    // ======================================================
+
+    private async Task SeedCategoriesAsync()
+    {
+        var categories = await GetCategoriesAsync();
+
+        if (categories.Count > 0)
+            return;
+
+        var defaultCategories = new List<Category>
         {
-            await _database.InsertAllAsync(new List<HabitCategory>
-            {
-                new HabitCategory
-                {
-                    CategoryName = "Study",
-                    Icon = "study.png",
-                    IsDefault = true
-                },
+            new Category { Name = "Study", IsDefault = true },
+            new Category { Name = "Health", IsDefault = true },
+            new Category { Name = "Spiritual", IsDefault = true },
+            new Category { Name = "Fitness", IsDefault = true },
+            new Category { Name = "Productivity", IsDefault = true }
+        };
 
-                new HabitCategory
-                {
-                    CategoryName = "Health",
-                    Icon = "health.png",
-                    IsDefault = true
-                },
-
-                new HabitCategory
-                {
-                    CategoryName = "Spiritual",
-                    Icon = "spiritual.png",
-                    IsDefault = true
-                },
-
-                new HabitCategory
-                {
-                    CategoryName = "Fitness",
-                    Icon = "fitness.png",
-                    IsDefault = true
-                },
-
-                new HabitCategory
-                {
-                    CategoryName = "Productivity",
-                    Icon = "productivity.png",
-                    IsDefault = true
-                }
-            });
-        }
+        await _database.InsertAllAsync(defaultCategories);
     }
 
-    private async Task SeedNPCMessages()
+    private async Task SeedNPCsAsync()
     {
-        var messages = await _database.Table<NPCMessage>().ToListAsync();
+        var npcs = await GetNPCsAsync();
 
-        if (messages.Count == 0)
+        if (npcs.Count > 0)
+            return;
+
+        var defaultNPCs = new List<NPC>
         {
-            await _database.InsertAllAsync(new List<NPCMessage>
+            new NPC
             {
-                new NPCMessage
-                {
-                    MessageText = "Semangat! Progress kecil tetap berarti!",
-                    MoodType = "Happy"
-                },
+                Name = "Default NPC",
+                Image = "hutao.png",
+                UnlockLevel = 1
+            },
+            new NPC
+            {
+                Name = "Knight NPC",
+                Image = "hutao.png",
+                UnlockLevel = 10
+            },
+            new NPC
+            {
+                Name = "Mage NPC",
+                Image = "hutao.png",
+                UnlockLevel = 20
+            }
+        };
 
-                new NPCMessage
-                {
-                    MessageText = "Kamu makin dekat dengan versi terbaikmu!",
-                    MoodType = "Motivation"
-                },
+        await _database.InsertAllAsync(defaultNPCs);
+    }
 
-                new NPCMessage
-                {
-                    MessageText = "Jangan berhenti sekarang!",
-                    MoodType = "Energetic"
-                }
-            });
-        }
+    private async Task SeedBackgroundsAsync()
+    {
+        var backgrounds = await GetBackgroundsAsync();
+
+        if (backgrounds.Count > 0)
+            return;
+
+        var defaultBackgrounds = new List<Background>
+        {
+            new Background
+            {
+                Name = "Default Background",
+                Image = "background0.jpeg",
+                UnlockLevel = 1
+            },
+            new Background
+            {
+                Name = "Forest",
+                Image = "background0.jpeg",
+                UnlockLevel = 10
+            },
+            new Background
+            {
+                Name = "Castle",
+                Image = "background0.jpeg",
+                UnlockLevel = 20
+            }
+        };
+
+        await _database.InsertAllAsync(defaultBackgrounds);
+    }
+
+    public async Task<NPC?> GetNpcByIdAsync(int id)
+    {
+        return await _database.Table<NPC>()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Background?> GetBackgroundByIdAsync(int id)
+    {
+        return await _database.Table<Background>()
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }
