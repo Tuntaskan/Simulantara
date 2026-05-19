@@ -469,8 +469,9 @@
                     VerticalOptions="Center">
 
                     <ImageButton
-                        Source="background.png"
-                        BackgroundColor="Transparent" />
+                        Source="backgroundicon.png"
+                        BackgroundColor="Transparent" 
+                        Command="{Binding OpenBackgroundCustomCommand}" />
 
                 </Frame>
 

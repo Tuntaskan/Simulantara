@@ -5,11 +5,11 @@ public class NotificationService
     private readonly List<string> _messages =
         new()
         {
-            "Semangat! Kamu hebat hari ini!",
-            "Jangan menyerah sekarang!",
-            "Sedikit progress tetap progress!",
-            "Ayo lanjut streak kamu!",
-            "Konsisten lebih penting daripada sempurna!"
+            "Cheer up! You did great today!",
+            "Don't give up now!",
+            "A little progress is still progress!",
+            "Let's keep up your streak!",
+            "Consistency is more important than perfection!"
         };
 
     public string GetRandomMessage()

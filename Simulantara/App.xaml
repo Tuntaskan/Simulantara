@@ -40,6 +40,9 @@
             <converter:ExpToProgressConverter
                 x:Key="ExpToProgressConverter"/>
 
+            <converter:LevelOpacityConverter
+                x:Key="LevelOpacityConverter"/>
+
         </ResourceDictionary>
 
     </Application.Resources>

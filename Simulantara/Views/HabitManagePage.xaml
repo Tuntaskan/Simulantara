@@ -38,7 +38,7 @@
                         TextColor="White" />
 
                     <Label
-                        Text="Kelola semua habit kamu"
+                        Text="Manage all your habits"
                         FontSize="15"
                         TextColor="#E0E0E0" />
 
@@ -55,8 +55,8 @@
                     HasShadow="False"
                     VerticalOptions="Center">
 
-                    <ImageButton
-                        Source="addhabit.png"
+                    <Button
+                        Text="+"
                         BackgroundColor="Transparent"
                         Command="{Binding AddHabitCommand}" />
 
@@ -69,7 +69,7 @@
 
                 <!-- EMPTY STATE -->
                 <VerticalStackLayout
-                    IsVisible="{Binding Habits.Count, Converter={StaticResource ZeroToBoolConverter}}"
+                    IsVisible="{Binding HasNoHabits}"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Spacing="15">
@@ -81,14 +81,14 @@
                         Opacity="0.9" />
 
                     <Label
-                        Text="Belum ada habit"
+                        Text="No habit yet"
                         FontSize="22"
                         FontAttributes="Bold"
                         TextColor="White"
                         HorizontalTextAlignment="Center" />
 
                     <Label
-                        Text="Tekan tombol + untuk membuat habit baru"
+                        Text="Press + button to make new habit"
                         FontSize="15"
                         TextColor="#D9D9D9"
                         HorizontalTextAlignment="Center" />
@@ -188,20 +188,27 @@
                                         <!-- DETAIL BUTTON -->
                                         <Frame
                                             Grid.Column="1"
-                                            HeightRequest="42"
-                                            WidthRequest="42"
-                                            Padding="0"
-                                            CornerRadius="12"
+                                            Padding="14,8"
+                                            CornerRadius="14"
                                             BackgroundColor="#5C7CFA"
                                             HasShadow="False"
-                                            VerticalOptions="Center">
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Center"
+                                            MaximumWidthRequest="180">
 
-                                            <Button
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding BindingContext.OpenHabitDetailCommand, Source={x:Reference ThisPage}}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Frame.GestureRecognizers>
+
+                                            <Label
                                                 Text="Detail"
-                                                BackgroundColor="Transparent"
-                                                Command="{Binding BindingContext.OpenHabitDetailCommand, Source={x:Reference ThisPage}}"
-                                                CommandParameter="{Binding .}" />
-
+                                                FontSize="13"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center" />
                                         </Frame>
 
                                         <!-- STREAK -->
@@ -315,7 +322,8 @@
 
                     <ImageButton
                         Source="backgroundicon.png"
-                        BackgroundColor="Transparent" />
+                        BackgroundColor="Transparent"
+                        Command="{Binding OpenBackgroundCustomCommand}" />
 
                 </Frame>
 

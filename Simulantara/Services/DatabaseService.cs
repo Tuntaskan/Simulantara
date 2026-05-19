@@ -16,6 +16,8 @@ public class DatabaseService
             FileSystem.AppDataDirectory,
             "simulantara.db");
 
+        System.Diagnostics.Debug.WriteLine(dbPath);
+
         _database = new SQLiteAsyncConnection(dbPath);
 
         // =========================
@@ -203,9 +205,15 @@ public class DatabaseService
             },
             new Background
             {
-                Name = "Forest",
-                Image = "background0.jpeg",
-                UnlockLevel = 10
+                Name = "Bedroom",
+                Image = "background1.jpg",
+                UnlockLevel = 2
+            },
+            new Background
+            {
+                Name = "Aranara",
+                Image = "background10.jpg",
+                UnlockLevel = 2
             },
             new Background
             {

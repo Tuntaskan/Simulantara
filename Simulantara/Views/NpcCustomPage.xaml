@@ -14,7 +14,7 @@
 
         <!-- BACKGROUND -->
         <Image
-            Source="background0.jpeg"
+            Source="{Binding SelectedBackground.Image}"
             Aspect="AspectFill" />
 
         <!-- OVERLAY -->
@@ -182,10 +182,17 @@
                             IsClippedToBounds="True">
 
                             <Image
-                                Source="hutao.png"
+                                Source="{Binding SelectedNpc.Image}"
                                 Aspect="AspectFit" />
 
                         </Frame>
+
+                        <Label
+                            Text="{Binding SelectedNpc.Name}"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center" />
 
                     </VerticalStackLayout>
 
@@ -198,8 +205,9 @@
 
                         <VerticalStackLayout Spacing="18">
 
+                            <!-- TITLE -->
                             <Label
-                                Text="Unlocked NPC"
+                                Text="NPC List"
                                 FontSize="20"
                                 FontAttributes="Bold"
                                 TextColor="White" />
@@ -227,35 +235,98 @@
                                             HorizontalOptions="Center"
                                             Spacing="8">
 
-                                            <Button
-                                                Padding="0"
-                                                HeightRequest="85"
-                                                WidthRequest="85"
+                                            <!-- NPC CARD -->
+                                            <Frame
+                                                Padding="8"
                                                 CornerRadius="20"
-                                                BackgroundColor="#FFFFFF"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectNPCCommand}"
-                                                CommandParameter="{Binding .}">
+                                                HasShadow="False"
+                                                BackgroundColor="#FFFFFF">
 
-                                                <Button.ImageSource>
+                                                <VerticalStackLayout
+                                                    Spacing="8"
+                                                    HorizontalOptions="Center">
 
-                                                    <FileImageSource
-                                                        File="{Binding Image}" />
+                                                    <!-- NPC BUTTON -->
+                                                    <ImageButton
+                                                        HeightRequest="75"
+                                                        WidthRequest="75"
+                                                        BackgroundColor="Transparent"
+                                                        Aspect="AspectFit"
+                                                        Source="{Binding Image}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectNPCCommand}"
+                                                        CommandParameter="{Binding .}">
 
-                                                </Button.ImageSource>
+                                                        <ImageButton.Opacity>
 
-                                            </Button>
+                                                            <MultiBinding Converter="{StaticResource LevelOpacityConverter}">
 
-                                            <Label
-                                                Text="{Binding Name}"
-                                                FontSize="13"
-                                                TextColor="White"
-                                                HorizontalTextAlignment="Center" />
+                                                                <!-- Unlock Level -->
+                                                                <Binding Path="UnlockLevel" />
 
-                                            <Label
-                                                Text="{Binding UnlockLevel, StringFormat='Lv {0}'}"
-                                                FontSize="11"
-                                                TextColor="#FFE6E6"
-                                                HorizontalTextAlignment="Center" />
+                                                                <!-- User Level -->
+                                                                <Binding
+                                                                    Source="{x:Reference ThisPage}"
+                                                                    Path="BindingContext.User.Level" />         
+
+                                                            </MultiBinding>
+
+                                                        </ImageButton.Opacity>
+
+                                                    </ImageButton>
+
+                                                    <!-- NAME -->
+                                                    <Label
+                                                        Text="{Binding Name}"
+                                                        FontSize="13"
+                                                        FontAttributes="Bold"
+                                                        HorizontalTextAlignment="Center"
+                                                        TextColor="Black">
+
+                                                        <Label.Opacity>
+
+                                                            <MultiBinding Converter="{StaticResource LevelOpacityConverter}">
+
+                                                                <!-- Unlock Level -->
+                                                                <Binding Path="UnlockLevel" />
+
+                                                                <!-- User Level -->
+                                                                <Binding
+                                                                    Source="{x:Reference ThisPage}"
+                                                                    Path="BindingContext.User.Level" />
+
+                                                            </MultiBinding>
+
+                                                        </Label.Opacity>
+
+                                                    </Label>
+
+                                                    <!-- LEVEL REQUIREMENT -->
+                                                    <Label
+                                                        FontSize="11"
+                                                        HorizontalTextAlignment="Center">
+
+                                                        <Label.FormattedText>
+
+                                                            <FormattedString>
+
+                                                                <Span
+                                                                    Text="Unlock Lv "
+                                                                    TextColor="#666666" />
+
+                                                                <Span
+                                                                    Text="{Binding UnlockLevel}"
+                                                                    TextColor="#FF365C"
+                                                                    FontAttributes="Bold" />
+
+                                                            </FormattedString>
+
+                                                        </Label.FormattedText>
+
+                                                    </Label>
+
+                                                </VerticalStackLayout>
+
+                                            </Frame>
 
                                         </VerticalStackLayout>
 
@@ -312,7 +383,7 @@
                     VerticalOptions="Center">
 
                     <ImageButton
-                        Source="habit.png"
+                        Source="addhabit.png"
                         BackgroundColor="Transparent"
                         Clicked="OnHabitClicked" />
 

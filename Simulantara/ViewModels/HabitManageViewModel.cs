@@ -23,6 +23,9 @@ public partial class HabitManageViewModel : BaseViewModel
     [ObservableProperty]
     private Background? currentBackground;
 
+    [ObservableProperty]
+    private bool hasNoHabits = true;
+
     [RelayCommand]
     public async Task LoadHabits()
     {
@@ -41,6 +44,8 @@ public partial class HabitManageViewModel : BaseViewModel
 
         foreach (var habit in habits)
             Habits.Add(habit);
+
+        HasNoHabits = Habits.Count == 0;
     }
 
     [RelayCommand]
@@ -55,6 +60,8 @@ public partial class HabitManageViewModel : BaseViewModel
         await _habitService.DeleteHabitAsync(habit);
 
         Habits.Remove(habit);
+
+        HasNoHabits = Habits.Count == 0;
     }
 
     [RelayCommand]
@@ -88,5 +95,11 @@ public partial class HabitManageViewModel : BaseViewModel
     public async Task OpenNpcCustom()
     {
         await Shell.Current.GoToAsync(nameof(Views.NpcCustomPage));
+    }
+
+    [RelayCommand]
+    public async Task OpenBackgroundCustom()
+    {
+        await Shell.Current.GoToAsync(nameof(Views.BackgroundCustomPage));
     }
 }

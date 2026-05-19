@@ -19,5 +19,7 @@ public partial class AddHabitPage : ContentPage
         base.OnAppearing();
 
         await _viewModel.LoadCategories();
+
+        await _viewModel.LoadBackgroundAsync();
     }
 }

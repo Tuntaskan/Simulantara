@@ -102,4 +102,10 @@ public partial class DashboardViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync(nameof(Views.NpcCustomPage));
     }
+
+    [RelayCommand]
+    public async Task OpenBackgroundCustom()
+    {
+        await Shell.Current.GoToAsync(nameof(Views.BackgroundCustomPage));
+    }
 }

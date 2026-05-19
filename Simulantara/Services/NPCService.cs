@@ -11,6 +11,21 @@ public class NPCService
         _database = database;
     }
 
+    public async Task<List<NPC>> GetAllNPCsAsync()
+    {
+        await _database.InitAsync();
+
+        return await _database.GetNPCsAsync();
+    }
+
+    public async Task<List<Background>>
+    GetAllBackgroundsAsync()
+    {
+        await _database.InitAsync();
+
+        return await _database.GetBackgroundsAsync();
+    }
+
     public async Task<List<NPC>> GetUnlockedNPCsAsync()
     {
         await _database.InitAsync();
@@ -30,7 +45,7 @@ public class NPCService
     public async Task<List<Background>> GetUnlockedBackgroundsAsync()
     {
         await _database.InitAsync();
-
+        
         var user = await _database.GetUserAsync();
 
         if (user == null)

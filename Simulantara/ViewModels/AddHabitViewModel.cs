@@ -10,6 +10,7 @@ public partial class AddHabitViewModel : BaseViewModel
 {
     private readonly HabitService _habitService;
     private readonly DatabaseService _database;
+    private readonly UserService _userService;
 
     [ObservableProperty]
     private string habitName = "";
@@ -20,21 +21,29 @@ public partial class AddHabitViewModel : BaseViewModel
     [ObservableProperty]
     private Category? selectedCategory;
 
+    [ObservableProperty]
+    private Background? currentBackground;
+
     public ObservableCollection<Category> Categories { get; set; }
     = new();
 
     public AddHabitViewModel(
-        HabitService habitService,
-        DatabaseService database)
+    HabitService habitService,
+    DatabaseService database,
+    UserService userService)
     {
         _habitService = habitService;
         _database = database;
+        _userService = userService;
     }
 
     public async Task InitializeAsync()
     {
         await _database.InitAsync();
+
         await LoadCategories();
+
+        await LoadBackgroundAsync();
     }
 
     [RelayCommand]
@@ -94,5 +103,24 @@ public partial class AddHabitViewModel : BaseViewModel
     public async Task Back()
     {
         await Shell.Current.GoToAsync(nameof(Views.HabitManagePage));
+    }
+
+    [RelayCommand]
+    public async Task OpenBackgroundCustom()
+    {
+        await Shell.Current.GoToAsync(nameof(Views.BackgroundCustomPage));
+    }
+
+    public async Task LoadBackgroundAsync()
+    {
+        var user = await _userService.GetUserAsync();
+
+        if (user == null)
+            return;
+
+        CurrentBackground =
+            await _userService
+            .GetCurrentBackgroundAsync(
+                user.CurrentBackgroundId);
     }
 }

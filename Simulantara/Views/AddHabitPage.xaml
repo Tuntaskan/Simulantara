@@ -14,7 +14,7 @@
 
         <!-- BACKGROUND -->
         <Image
-            Source="bg_default.png"
+            Source="{Binding CurrentBackground.Image}"
             Aspect="AspectFill" />
 
         <!-- DARK OVERLAY -->
@@ -45,9 +45,12 @@
                             HasShadow="False"
                             VerticalOptions="Center">
 
-                            <ImageButton
-                                Source="back.png"
+                            <Button
+                                Text="←"
+                                FontSize="24"
+                                FontAttributes="Bold"
                                 BackgroundColor="Transparent"
+                                TextColor="#4B433A"
                                 Command="{Binding BackCommand}" />
 
                         </Frame>

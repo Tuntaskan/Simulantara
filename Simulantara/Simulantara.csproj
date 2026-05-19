@@ -39,6 +39,10 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiImage Include="Resources\AppIcon\delete.png" />
+		<MauiImage Include="Resources\AppIcon\edit.png" />
+		<MauiImage Include="Resources\AppIcon\npc.png" />
+		<MauiImage Include="Resources\Images\Backgrounds\background10.jpg" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -55,7 +59,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\addhabit.png" />
+	  <None Remove="Resources\AppIcon\backgroundicon.png" />
+	  <None Remove="Resources\AppIcon\delete.png" />
+	  <None Remove="Resources\AppIcon\edit.png" />
+	  <None Remove="Resources\AppIcon\home.png" />
+	  <None Remove="Resources\AppIcon\npc.png" />
 	  <None Remove="Resources\Images\Backgrounds\background0.jpeg" />
+	  <None Remove="Resources\Images\Backgrounds\background1.jpg" />
+	  <None Remove="Resources\Images\Backgrounds\background10.jpg" />
 	  <None Remove="Resources\Images\NPC\hutao.png" />
 	</ItemGroup>
 
@@ -115,7 +127,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="Resources\AppIcon\home.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\AppIcon\addhabit.png" />
+	  <MauiImage Include="Resources\AppIcon\backgroundicon.png" />
 	  <MauiImage Include="Resources\Images\Backgrounds\background0.jpeg" />
+	  <MauiImage Include="Resources\Images\Backgrounds\background1.jpg" />
 	  <MauiImage Include="Resources\Images\NPC\hutao.png" />
 	</ItemGroup>
 

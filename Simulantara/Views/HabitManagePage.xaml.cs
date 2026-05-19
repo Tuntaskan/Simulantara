@@ -17,8 +17,10 @@ public partial class HabitManagePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        // Load semua habit dari database
-        await _viewModel.LoadHabitsCommand.ExecuteAsync(null);
+        if (BindingContext is HabitManageViewModel viewModel)
+        {
+            // Load semua habit dari database
+            await _viewModel.LoadHabitsCommand.ExecuteAsync(null);
+        }
     }
 }

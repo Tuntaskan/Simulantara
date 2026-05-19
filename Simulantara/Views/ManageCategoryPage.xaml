@@ -14,7 +14,7 @@
 
         <!-- BACKGROUND -->
         <Image
-            Source="bg_default.png"
+            Source="{Binding CurrentBackground.Image}"
             Aspect="AspectFill" />
 
         <!-- OVERLAY -->

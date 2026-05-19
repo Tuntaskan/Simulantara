@@ -11,11 +11,17 @@ public partial class NpcCustomViewModel : BaseViewModel
     private readonly NPCService _npcService;
     private readonly UserService _userService;
 
-    public ObservableCollection<NPC> NPCs
-        = new();
+    public ObservableCollection<NPC> NPCs { get; set; }
+    = new();
 
     [ObservableProperty]
     private User? user;
+
+    [ObservableProperty]
+    private NPC? selectedNpc;
+
+    [ObservableProperty]
+    private Background? selectedBackground;
 
     public NpcCustomViewModel(
         NPCService npcService,
@@ -31,12 +37,18 @@ public partial class NpcCustomViewModel : BaseViewModel
         User = await _userService.GetUserAsync();
 
         var npcs =
-            await _npcService.GetUnlockedNPCsAsync();
+            await _npcService.GetAllNPCsAsync();
 
         NPCs.Clear();
 
         foreach (var npc in npcs)
             NPCs.Add(npc);
+
+        SelectedNpc = npcs
+            .FirstOrDefault(x => x.Id == User.CurrentNpcId);
+
+        SelectedBackground =
+            await _userService.GetCurrentBackgroundAsync(User.CurrentBackgroundId);
     }
 
     [RelayCommand]
@@ -45,7 +57,12 @@ public partial class NpcCustomViewModel : BaseViewModel
         if (User == null)
             return;
 
+        if (User.Level < npc.UnlockLevel)
+            return;
+
         User.CurrentNpcId = npc.Id;
+
+        SelectedNpc = npc;
 
         await _userService.SaveUserAsync(User);
     }
